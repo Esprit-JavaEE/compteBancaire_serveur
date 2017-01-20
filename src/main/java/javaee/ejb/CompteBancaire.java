@@ -2,10 +2,13 @@ package javaee.ejb;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 
-@Singleton
+@Stateless
 public class CompteBancaire implements CompteBancaireLocal, CompteBancaireRemote{
+	
+	private static int nb_instance = 0;
 	
 	private int solde = 0;
 	
@@ -13,13 +16,13 @@ public class CompteBancaire implements CompteBancaireLocal, CompteBancaireRemote
 	
 	@PostConstruct
 	void postconstruct(){
-		lastBeanUser = "nobody";		
+		lastBeanUser = "instance" + ++nb_instance;		
 	}
 	
 	@Override
 	public String versement(String nomPrenom, int montant) {
-		solde = solde + montant;
 		System.out.println("Le solde de " +nomPrenom + " est : " + solde +  " et il/elle veut verser " + montant);
+		solde = solde - montant;
 		String response = "Vous etes "+ nomPrenom +", Vous avez utilisé le bean de " + lastBeanUser + ", votre nouveau Solde est : " + solde;
 		lastBeanUser = nomPrenom;
 		return response;
@@ -27,10 +30,11 @@ public class CompteBancaire implements CompteBancaireLocal, CompteBancaireRemote
 
 	@Override
 	public String retrait(String nomPrenom, int montant) {
-		lastBeanUser = nomPrenom;
 		System.out.println("Le solde de " +nomPrenom + " est : " + solde +  " et il/elle veut retirer " + montant);
-		solde = solde - montant;
-		return "Vous etes "+ nomPrenom + ", Vous avez utilisé le bean de " + lastBeanUser + ", votre nouveau Solde est : " + solde;
+		solde = solde + montant;
+		String response = "Vous etes "+ nomPrenom +", Vous avez utilisé le bean de " + lastBeanUser + ", votre nouveau Solde est : " + solde;
+		lastBeanUser = nomPrenom;
+		return response;
 	}
 
 }
