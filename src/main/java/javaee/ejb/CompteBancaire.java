@@ -22,7 +22,7 @@ public class CompteBancaire implements CompteBancaireLocal, CompteBancaireRemote
 	@Override
 	public String versement(String nomPrenom, int montant) {
 		System.out.println("Le solde de " +nomPrenom + " est : " + solde +  " et il/elle veut verser " + montant);
-		solde = solde - montant;
+		solde = solde + montant;
 		String response = "Vous etes "+ nomPrenom +", Vous avez utilisé le bean de " + lastBeanUser + ", votre nouveau Solde est : " + solde;
 		lastBeanUser = nomPrenom;
 		return response;
@@ -31,7 +31,7 @@ public class CompteBancaire implements CompteBancaireLocal, CompteBancaireRemote
 	@Override
 	public String retrait(String nomPrenom, int montant) {
 		System.out.println("Le solde de " +nomPrenom + " est : " + solde +  " et il/elle veut retirer " + montant);
-		solde = solde + montant;
+		solde = solde - montant;
 		String response = "Vous etes "+ nomPrenom +", Vous avez utilisé le bean de " + lastBeanUser + ", votre nouveau Solde est : " + solde;
 		lastBeanUser = nomPrenom;
 		return response;
