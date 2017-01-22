@@ -16,7 +16,7 @@ public class CompteBancaire implements CompteBancaireLocal, CompteBancaireRemote
 	
 	@PostConstruct
 	void postconstruct(){
-		lastBeanUser = "instance" + ++nb_instance;		
+		lastBeanUser = "instance" + ++nb_instance;
 	}
 	
 	@Override
