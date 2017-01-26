@@ -9,16 +9,30 @@ import javax.ejb.Singleton;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 
+/**
+ * 
+ * @author Walid-YAICH
+ * Cette classe représente un compte bancaire.
+ * 
+ * les méthodes versement et retrait utilisent l'attribut solde pour memoriser le solde d'un client.
+ * 
+ * les méthode versementPermanent et retraitPermanent utilisent 
+ * la classe Comptes(@singleton) pour stocker le couple (client, solde), 
+ * de cette façon les soldes des clients sont maintenu jusqu'a l'arret du serveur d'application.
+ * 
+ */
 @Stateful
 public class CompteBancaire implements CompteBancaireLocal, CompteBancaireRemote{
 	
 	@EJB //Injection de la classe Comptes dans la classe CompteBancaire
 	private Comptes comptes;
 	
+	//Pour savoir le nombre d'instance que le conteneur EJB a crée
 	private static int nb_instance = 0;
 	
 	private int solde = 0;
 	
+	//Le but est que chaque personne qui prend un bean du pool d'instance, marque son nom dessus.
 	private String lastBeanUser;
 	
 //	@Resource
@@ -59,6 +73,8 @@ public class CompteBancaire implements CompteBancaireLocal, CompteBancaireRemote
 		soldeClient = soldeClient + montant;
 		//Mettre a jour le compte du client dans le singleton
 		comptes.getComptes().put(nomPrenom, soldeClient); 
+		
+		//Préparer la résponse
 		String response = "Vous etes "+ nomPrenom +", Vous avez utilisé le bean de " + lastBeanUser + ", votre nouveau Solde est : " + soldeClient;
 		lastBeanUser = nomPrenom;
 		return response;
@@ -75,6 +91,8 @@ public class CompteBancaire implements CompteBancaireLocal, CompteBancaireRemote
 		soldeClient = soldeClient - montant;
 		//Mettre a jour le compte du client dans le singleton
 		comptes.getComptes().put(nomPrenom, soldeClient); 
+		
+		//Préparer la réponse
 		String response = "Vous etes "+ nomPrenom +", Vous avez utilisé le bean de " + lastBeanUser + ", votre nouveau Solde est : " + soldeClient;
 		lastBeanUser = nomPrenom;
 		return response;
