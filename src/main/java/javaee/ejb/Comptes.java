@@ -6,6 +6,16 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 
+
+/**
+ * 
+ * @author Walid-YAICH
+ *
+ * Une seule instance de cette classe sera crée.
+ * Cette instance sera détruite a l'arret du serveur d'application
+ * Cette instance va contenir une liste de tous les clients avec leur solde associé
+ *
+ */
 @Singleton
 public class Comptes {
 	
@@ -14,7 +24,7 @@ public class Comptes {
 	
 	@PostConstruct
 	void postconstruct(){
-		System.out.println("L'instance Singleton Comptes est cr�e !");
+		System.out.println("L'instance Singleton Comptes est crée !");
 	}
 
 	public Map<String, Integer> getComptes() {
